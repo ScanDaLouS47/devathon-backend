@@ -11,6 +11,7 @@ class PersonalInfo extends Model
     use HasFactory;
 
     protected $fillable = [
+        'userId',
         'name',
         'lName',
         'address',

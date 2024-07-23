@@ -13,11 +13,12 @@ return new class extends Migration
     {
         Schema::create('personal_infos', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('UserId')->unique();
             $table->string('name', 50);
             $table->string('lName', 150);
             $table->string('address', 255)->nullable();
-            $table->string('phone', 15);
-            $table->string('dni', 15)->unique();
+            $table->string('phone', 25);
+            $table->string('dni', 25)->unique();
             $table->string('gender', 10)->nullable();
             $table->unsignedSmallInteger('age')->nullable();
             $table->date('birthDate')->nullable();
