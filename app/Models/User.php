@@ -21,10 +21,16 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'email',
-        'password',
-        'personalInfoId',
         'roleId',
-        'status'
+        'status',
+        'name',
+        'lName',
+        'address',
+        'phone',
+        'dni',
+        'gender',
+        'birthdate',
+        'sup_id'
     ];
 
     /**
@@ -33,8 +39,7 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'remember_token'
     ];
 
     /**
@@ -50,11 +55,6 @@ class User extends Authenticatable
         ];
     }
 
-    public function personalInfo(): HasOne
-    {
-        return $this->hasOne(PersonalInfo::class);
-    }
-    
     public function role(): BelongsTo
     {
         return $this->belongsTo(Role::class);

@@ -19,8 +19,14 @@ class UserRequest extends FormRequest
      *
      * @return array<string, \Illuminate\Contracts\Validation\ValidationRule|array<mixed>|string>
      */
-//     public function rules(): array
-//     {
-        
-//     }
+    public function rules(): array
+    {
+        return [
+            'name' => 'required|string|max:50',
+            'lName' => 'required|string|max:150',
+            'email' => 'required|email|unique:users,email',
+            'phone' => 'required|string|unique:users,phone|min:7|max:15',
+            'sup_id'=> 'required|string|unique:users,sup_id|max:70'
+        ];
+    }
 }

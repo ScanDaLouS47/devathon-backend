@@ -15,15 +15,8 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create(['role_id' => 2])->each(function ($user) {
-            
-            PersonalInfo::factory()->create(['user_id' => $user->id]);
-        });
-    
+        User::factory()->create(['role_id' => 2]);
 
-        User::factory(10)->create(['role_id' => 1])->each(function ($user) {
-            
-            PersonalInfo::factory()->create(['user_id' => $user->id]);
-        });
+        User::factory(10)->create(['role_id' => 1]);
     }
 }
