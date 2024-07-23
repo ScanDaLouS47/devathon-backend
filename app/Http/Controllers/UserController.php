@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Resources\Json\JsonResource;
 
 class UserController extends Controller
 {
@@ -15,8 +17,8 @@ class UserController extends Controller
     {
         return response()->json([
             'ok' => true,
-            'data' => [User::all()],
-            'msg' => 'UserList'
+            'data' => UserResource::collection(User::all()),
+            'msg' => ''
         ]);
     }
 
@@ -25,7 +27,7 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        
     }
 
     /**
