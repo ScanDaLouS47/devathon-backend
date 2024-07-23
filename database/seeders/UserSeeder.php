@@ -15,15 +15,15 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        User::factory()->create(['roleId' => 2])->each(function ($user) {
+        User::factory()->create(['role_id' => 2])->each(function ($user) {
             
-            PersonalInfo::factory()->create(['userId' => $user->id]);
+            PersonalInfo::factory()->create(['user_id' => $user->id]);
         });
     
 
-        User::factory(10)->create(['roleId' => 1])->each(function ($user) {
+        User::factory(10)->create(['role_id' => 1])->each(function ($user) {
             
-            PersonalInfo::factory()->create(['userId' => $user->id]);
+            PersonalInfo::factory()->create(['user_id' => $user->id]);
         });
     }
 }
