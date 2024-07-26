@@ -13,7 +13,8 @@ class Table extends Model
     protected $fillable = [
         'number',
         'size',
-        'img'
+        'img',
+        'status'
     ];
 
     public function bookings(): HasMany
