@@ -2,14 +2,12 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
-use Illuminate\Contracts\Validation\Validator;
-use App\Models\Role;
 
-
-class CreateUserRequest extends FormRequest
+class UpdateTableRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,30 +25,21 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:50',
-            'lName' => 'required|string|max:150',
-            'email' => 'required|email|unique:users,email',
-            'phone' => 'required|string|unique:users,phone|min:7|max:15',
-            'sup_id' => 'nullable|required|string|unique:users,sup_id|max:70'
+            'number' => 'integer|unique:tables,number',    
+            'size' => 'integer',
+            'img' => 'nullable|string',
+            'status' => 'nullable|string'        
         ];
     }
 
     public function messages()
     {
         return [
-            'unique' => 'User already exist',
-            'required' => 'Required data is missing',
-            'min' => 'Any field has invalid format',
-            'max' => 'Any field has invalid format',
-            'email' => 'Email has invalid format'
+            'unique' => 'Table with this number already exist',            
+            'integer' => 'Any field has invalid format',
+            'string' => 'Any field has invalid format'            
         ];
     }
-
-    public function getDefaultRoleId(): int
-    {
-        return Role::where('type', 'user')->firstOrFail()->id;
-    }
-
 
     protected function failedValidation(Validator $validator)
     {
