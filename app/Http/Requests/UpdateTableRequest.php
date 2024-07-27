@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
 class UpdateTableRequest extends FormRequest
@@ -25,7 +26,12 @@ class UpdateTableRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'number' => 'integer|unique:tables,number',    
+            'number' => [                
+                'integer',
+                Rule::unique('tables')->where(function ($query) {
+                    return $query->where('status', 'active');
+                }),
+            ],    
             'size' => 'integer',
             'img' => 'nullable|string',
             'status' => 'nullable|string'        
