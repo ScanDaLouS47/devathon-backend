@@ -11,21 +11,24 @@ class Booking extends Model
     use HasFactory;
 
     protected $fillable = [
-        'resrvationDate'
+        'reservationDate',
+        'userId',
+        'tableId',
+        'statusId'
     ];
 
     public function user(): BelongsTo
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'userId');
     }
 
     public function table(): BelongsTo
     {
-        return $this->belongsTo(Table::class);
+        return $this->belongsTo(Table::class, 'tableId');
     }
 
     public function status(): BelongsTo
     {
-        return $this->belongsTo(Status::class);
+        return $this->belongsTo(Status::class, 'statusId');
     }
 }

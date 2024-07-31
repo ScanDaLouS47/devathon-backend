@@ -19,6 +19,6 @@ class Table extends Model
 
     public function bookings(): HasMany
     {
-        return $this->hasMany(Booking::class);
+        return $this->hasMany(Booking::class, 'tableId');
     }
 }

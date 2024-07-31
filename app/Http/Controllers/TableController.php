@@ -97,7 +97,7 @@ class TableController extends Controller
             $table->status = 'inactive';
             $table->save();
                
-            return BaseResponse::response(true, $table, 'Table deleted', 200);
+            return BaseResponse::response(true, new TableResource($table), 'Table deleted', 200);
         } catch (Exception $e) {
             return BaseResponse::response(false, null, $e->getMessage(), 500);
         }
