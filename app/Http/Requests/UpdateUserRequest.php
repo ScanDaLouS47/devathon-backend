@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Validation\Rules\ImageFile;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Validation\Validator;
 use App\Models\User;
@@ -17,11 +18,15 @@ class UpdateUserRequest extends FormRequest
 
     public function rules(): array
     {
+        $user = User::where('sup_id', $this->route('user'))->first();
+        var_dump($this->route('user'));
+
         return [
-            'name' => 'required|string|max:50',
-            'lName' => 'required|string|max:150',
-            'email' => 'required|email|unique:users,email,' . $this->user->id,
-            'phone' => 'required|string|min:7|max:15|unique:users,phone,' . $this->user->id
+            'name' => "required|string|regex:/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ž' ]{3,50}$/",
+            'lName' => "required|string|regex:/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ž' ]{3,50}$/",
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            'phone' => 'required|string|regex:/^\+?[1-9]\d{1,14}$/|unique:users,phone,' . $user->id,
+            'file' => ['nullable', ImageFile::image()->max( 3 * 1024 )]
         ];
     }
 
@@ -30,8 +35,7 @@ class UpdateUserRequest extends FormRequest
         return [
             'unique' => 'Some data belongs to other users',
             'required' => 'Required data is missing',
-            'min' => 'Any field has invalid format',
-            'max' => 'Any field has invalid format',
+            'regex' => 'Any field has invalid format',
             'email' => 'Email has invalid format'
         ];
     }
@@ -39,8 +43,7 @@ class UpdateUserRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         $errors = (new ValidationException($validator))->errors();
-        $errors = array_values($errors);
-        
+
         throw new HttpResponseException(
             response()->json([
                 'ok' => false,

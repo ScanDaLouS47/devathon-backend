@@ -19,7 +19,7 @@ class ApiKeyValidator
     public function handle(Request $request, Closure $next): Response
     {
         try {
-            $res = $request->headers->get('Authorization');
+            $res = $request->headers->get('x-api-key');
             $value = Crypt::decryptString($res);
             
             if ($value = env('API_KEY')) {
