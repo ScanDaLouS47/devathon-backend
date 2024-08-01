@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Validation\Rules\ImageFile;
 use Illuminate\Contracts\Validation\Validator;
 use App\Models\Role;
 
@@ -27,11 +28,12 @@ class CreateUserRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:50',
-            'lName' => 'required|string|max:150',
+            'name' => "required|string|regex:/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ž' ]{3,50}$/",
+            'lName' => "required|string|regex:/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ž' ]{3,50}$/",
             'email' => 'required|email|unique:users,email',
-            'phone' => 'required|string|unique:users,phone|min:7|max:15',
-            'sup_id' => 'nullable|required|string|unique:users,sup_id|max:70'
+            'phone' => 'required|string|unique:users,phone|regex:/^\+?[1-9]\d{1,14}$/',
+            'sup_id' => 'nullable|string|unique:users,sup_id|max:70',
+            'file' => ['nullable', ImageFile::image()->max( 3 * 1024 )]
         ];
     }
 
@@ -42,7 +44,8 @@ class CreateUserRequest extends FormRequest
             'required' => 'Required data is missing',
             'min' => 'Any field has invalid format',
             'max' => 'Any field has invalid format',
-            'email' => 'Email has invalid format'
+            'email' => 'Email has invalid format',
+            'file' => 'The image has invalid format'
         ];
     }
 

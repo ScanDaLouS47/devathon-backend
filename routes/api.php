@@ -10,10 +10,13 @@ use Illuminate\Support\Facades\Route;
 //     return $request->user();
 // })->middleware('auth:sanctum');
 
+Route::post('/user/verify', [UserController::class, 'verify']);
 Route::resource('/user', UserController::class);
+
 Route::resource('/table', TableController::class);
 Route::get('/table_available', [TableController::class,'available']);
 Route::get('/mybookings/{id}', [BookingController::class, 'mybookings']);
 Route::resource('/booking', BookingController::class);
+
 
 
