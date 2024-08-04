@@ -32,7 +32,7 @@ class CreateUserRequest extends FormRequest
             'lName' => "required|string|regex:/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ž' ]{3,50}$/",
             'email' => 'required|email|unique:users,email',
             'phone' => 'required|string|unique:users,phone|regex:/^\+?[1-9]\d{1,14}$/',
-            'sup_id' => 'nullable|string|unique:users,sup_id|max:70',
+            'password' => 'nullable|string|unique:users,password|max:70',
             'file' => ['nullable', ImageFile::image()->max( 3 * 1024 )]
         ];
     }
