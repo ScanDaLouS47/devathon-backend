@@ -10,10 +10,11 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, MediaAlly;
+    use HasFactory, Notifiable, MediaAlly, HasApiTokens;
 
     /**
      * The attributes that are mass assignable.
@@ -31,7 +32,7 @@ class User extends Authenticatable
         'dni',
         'gender',
         'birthdate',
-        'sup_id'
+        'password'
     ];
 
     /**
@@ -40,7 +41,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $hidden = [
-        'remember_token'
+        'remember_token',
+        'password'
     ];
 
     /**
@@ -69,5 +71,10 @@ class User extends Authenticatable
     public function userImage(): HasOne
     {
         return $this->hasOne(UserImage::class);
+    }
+
+    public function refreshToken(): HasOne
+    {
+        return $this->hasOne(RefreshToken::class);
     }
 }

@@ -3,13 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\BaseResponse;
-use App\Http\Requests\CreateUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
 use App\NotFoundResponse;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\User;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
@@ -26,37 +25,10 @@ class UserController extends Controller
         }
     }
 
-    public function store(CreateUserRequest $request): JsonResponse
+    public function userProfile(): JsonResponse
     {
         try {
-            $validatedData = $request->validated();
-            $validatedData['role_id'] = $validatedData['role_id'] ?? $request->getDefaultRoleId();
-            $validatedData['status'] = $validatedData['status'] ?? 'active';
-            $user = User::create($validatedData);
-
-            if ($request->hasFile('image')) {
-                $img = $request->file('image')->storeOnCloudinary('users');
-                $url = $img->getSecurePath();
-                $public_id = $img->getPublicId();
-
-                $user->userImage()->create([
-                    'public_id' => $public_id,
-                    'url' => $url,
-                    'user_id' => $user->id
-                ]);
-            }
-            return BaseResponse::response(true, new UserResource($user), 'Create user successfull', 201);
-        } catch (Exception $e) {
-            var_dump($e);
-            return BaseResponse::response(false, $e, $e->getMessage(), 500);
-        }
-    }
-
-    public function show(string $id): JsonResponse
-    {
-        try {
-            $user = User::where('sup_id', $id)->where('status', 'active')->first();
-
+            $user = auth()->user();
             if (!$user)
                 return NotFoundResponse::response();
             return BaseResponse::response(true, new UserResource($user), '', 200);
@@ -65,24 +37,33 @@ class UserController extends Controller
         }
     }
 
-    public function update(UpdateUserRequest $request, string $id): JsonResponse
+    public function show(string $user): JsonResponse
     {
         try {
-            $user = User::where('sup_id', $id)->first();
-
+            $user = User::find($user);
             if (!$user)
                 return NotFoundResponse::response();
+            return BaseResponse::response(true, new UserResource($user), '', 200);
+        } catch (Exception $e) {
+            return BaseResponse::response(false, null, $e->getMessage(), 500);
+        }
+    }
 
-            var_dump($user->userImage->public_id);
-            if ($request->hasFile('image')) {
-                Cloudinary::destroy($user->userImage->public_id);
+    public function update(UpdateUserRequest $request): JsonResponse
+    {
+        try {
+            $user = User::find(Auth::user()->id)->first();
+            
+            // if ($request->hasFile('image')) {
+            //     Cloudinary::destroy($user->userImage->public_id);
 
-                $img = $request->file('image')->storeOnCloudinary('users');
+            //     $img = $request->file('image')->storeOnCloudinary('users');
 
-                $user->userImage->public_id = $img->getSecurePath();
-                $user->userImage->url = $img->getPublicId();
-                $user->save();
-            }
+            //     $user->userImage->public_id = $img->getSecurePath();
+            //     $user->userImage->url = $img->getPublicId();
+            //     $user->save();
+            // }
+
             $user->update($request->validated());
 
             return BaseResponse::response(true, new UserResource($user), 'Update successfull', 200);
@@ -91,10 +72,10 @@ class UserController extends Controller
         }
     }
 
-    public function destroy(string $id): JsonResponse
+    public function destroy(): JsonResponse
     {
         try {
-            $user = User::where('sup_id', $id)->first();
+            $user = User::find(Auth::user()->id);
             if (!$user || $user->status === 'inactive')
                 return NotFoundResponse::response();
 
@@ -103,23 +84,6 @@ class UserController extends Controller
 
             $user->delete();
             return BaseResponse::response(true, new UserResource($user), 'Account deleted', 200);
-        } catch (Exception $e) {
-            return BaseResponse::response(false, null, $e->getMessage(), 500);
-        }
-    }
-
-    public function verify(Request $request): JsonResponse
-    {
-        try {
-            $request = json_decode($request->getContent());
-            $user = User::where('email', $request->email)->first();
-            if (!$user)
-                return NotFoundResponse::response();
-
-            $user->status = 'active';
-            $user->sup_id = $request->sup_id;
-            $user->save();
-            return BaseResponse::response(true, new UserResource($user), 'User verified', 200);
         } catch (Exception $e) {
             return BaseResponse::response(false, null, $e->getMessage(), 500);
         }
