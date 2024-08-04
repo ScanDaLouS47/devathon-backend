@@ -22,7 +22,7 @@ return new class extends Migration {
             $table->string('gender', 10)->nullable();
             $table->date('birthDate')->nullable();
             $table->string('status');
-            $table->string('password');
+            $table->string('sup_id')->nullable();
             $table->timestamps();
         });
 

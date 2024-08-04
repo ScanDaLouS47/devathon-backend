@@ -26,10 +26,37 @@ class UserController extends Controller
         }
     }
 
-    public function show(): JsonResponse
+    public function store(CreateUserRequest $request): JsonResponse
     {
         try {
-            $user = auth()->user();
+            $validatedData = $request->validated();
+            $validatedData['role_id'] = $validatedData['role_id'] ?? $request->getDefaultRoleId();
+            $validatedData['status'] = $validatedData['status'] ?? 'active';
+            $user = User::create($validatedData);
+
+            if ($request->hasFile('image')) {
+                $img = $request->file('image')->storeOnCloudinary('users');
+                $url = $img->getSecurePath();
+                $public_id = $img->getPublicId();
+
+                $user->userImage()->create([
+                    'public_id' => $public_id,
+                    'url' => $url,
+                    'user_id' => $user->id
+                ]);
+            }
+            return BaseResponse::response(true, new UserResource($user), 'Create user successfull', 201);
+        } catch (Exception $e) {
+            var_dump($e);
+            return BaseResponse::response(false, $e, $e->getMessage(), 500);
+        }
+    }
+
+    public function show(string $id): JsonResponse
+    {
+        try {
+            $user = User::where('sup_id', $id)->where('status', 'active')->first();
+
             if (!$user)
                 return NotFoundResponse::response();
             return BaseResponse::response(true, new UserResource($user), '', 200);
@@ -76,6 +103,23 @@ class UserController extends Controller
 
             $user->delete();
             return BaseResponse::response(true, new UserResource($user), 'Account deleted', 200);
+        } catch (Exception $e) {
+            return BaseResponse::response(false, null, $e->getMessage(), 500);
+        }
+    }
+
+    public function verify(Request $request): JsonResponse
+    {
+        try {
+            $request = json_decode($request->getContent());
+            $user = User::where('email', $request->email)->first();
+            if (!$user)
+                return NotFoundResponse::response();
+
+            $user->status = 'active';
+            $user->sup_id = $request->sup_id;
+            $user->save();
+            return BaseResponse::response(true, new UserResource($user), 'User verified', 200);
         } catch (Exception $e) {
             return BaseResponse::response(false, null, $e->getMessage(), 500);
         }
