@@ -29,7 +29,7 @@ class UserFactory extends Factory
             'name' => fake()->name(),
             'lName' => fake()->lastName(),
             'phone' => fake()->phoneNumber(),
-            'sup_id' => fake()->password()
+            'password' => fake()->password()
         ];
     }
 
