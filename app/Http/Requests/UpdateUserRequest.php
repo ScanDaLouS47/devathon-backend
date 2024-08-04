@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rules\ImageFile;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Contracts\Validation\Validator;
@@ -18,8 +19,7 @@ class UpdateUserRequest extends FormRequest
 
     public function rules(): array
     {
-        $user = User::where('sup_id', $this->route('user'))->first();
-        var_dump($this->route('user'));
+        $user = User::find(Auth::user()->id)->first();
 
         return [
             'name' => "required|string|regex:/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ž' ]{3,50}$/",
@@ -48,7 +48,7 @@ class UpdateUserRequest extends FormRequest
             response()->json([
                 'ok' => false,
                 'data' => null,
-                'msg' => $errors[0]
+                'msg' => $errors
             ])
         );
     }
