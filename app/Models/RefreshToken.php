@@ -12,7 +12,8 @@ class RefreshToken extends Model
 
     protected $fillable = [
         'token',
-        'user_id'
+        'user_id',
+        'expires_at'
     ];
 
     public function user(): BelongsTo

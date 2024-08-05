@@ -3,7 +3,11 @@
     "type": "module",
     "scripts": {
         "dev": "vite",
-        "build": "vite build"
+        "build": "vite build",
+        "create-db": "php artisan migrate",
+        "create-db-seed": "php artisan db:seed",
+        "start-server": "php artisan serve",
+        "rollback-db": "php artisan migrate:rollback"
     },
     "devDependencies": {
         "axios": "^1.6.4",
