@@ -13,7 +13,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use Str;
 
 
 class AuthController extends Controller
@@ -62,7 +62,7 @@ class AuthController extends Controller
             $refreshToken = Str::random(64);
             $expiresAt = now()->addDays(30);
 
-            var_dump($expiresAt);
+            // var_dump($expiresAt);
 
             RefreshToken::create([
                 'user_id' => $user->id,
