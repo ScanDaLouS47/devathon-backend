@@ -1,5 +1,6 @@
 <?php
 
+use App\BaseResponse;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\TableController;
@@ -11,7 +12,8 @@ Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:sanctum');
 
-Route::post('login', [AuthController::class, 'login']);
+
+Route::post('login', ['as' => 'login', 'uses' => [AuthController::class, 'login']]);
 Route::post('create', [AuthController::class, 'store']);
 
 Route::group([
@@ -33,5 +35,5 @@ Route::resource('/booking', BookingController::class);
 
 
 Route::fallback(function () {
-    return response()->json(['message' => 'Page Not Found'], 404);
+    return BaseResponse::response(false, null, 'Unauthorized', 401);
 });
