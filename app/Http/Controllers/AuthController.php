@@ -62,8 +62,6 @@ class AuthController extends Controller
             $refreshToken = Str::random(64);
             $expiresAt = now()->addDays(30);
 
-            var_dump($expiresAt);
-
             RefreshToken::create([
                 'user_id' => $user->id,
                 'token' => hash('sha256', $refreshToken),
@@ -75,7 +73,7 @@ class AuthController extends Controller
                 'token' => $token,
                 'refreshToken' => $refreshToken,
                 'expires_at' => $expiresAt->diffInSeconds(now())
-            ], 'Login user successfull', 201);
+            ], 'Login user successful', 201);
         } catch (Exception $e) {
             return BaseResponse::response(false, $e, $e->getMessage(), 500);
         }
