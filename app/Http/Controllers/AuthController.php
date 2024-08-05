@@ -62,7 +62,7 @@ class AuthController extends Controller
             $refreshToken = Str::random(64);
             $expiresAt = now()->addDays(30);
 
-            var_dump($expiresAt);
+            // var_dump($expiresAt);
 
             RefreshToken::create([
                 'user_id' => $user->id,
