@@ -13,4 +13,6 @@ class DetailBooking extends Model
         'id_booking',
         'id_table'
     ];
+
+    
 }

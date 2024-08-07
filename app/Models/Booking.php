@@ -14,7 +14,8 @@ class Booking extends Model
         'reservationDate',
         'userId',
         'tableId',
-        'statusId'
+        'statusId',
+        'number'
     ];
 
     public function user(): BelongsTo

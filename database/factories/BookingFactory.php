@@ -22,7 +22,8 @@ class BookingFactory extends Factory
             'reservationDate' => fake()->date(),
             'userId' => User::factory(),
             'tableId' => Table::factory(),
-            'statusId' => 1
+            'statusId' => 1,
+            'number' => fake()->randomNumber()
         ];
     }
 }
