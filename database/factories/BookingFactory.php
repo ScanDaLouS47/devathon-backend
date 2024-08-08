@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Shift;
 use App\Models\Table;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -21,9 +22,13 @@ class BookingFactory extends Factory
         return [
             'reservationDate' => fake()->date(),
             'userId' => User::factory(),
-            'tableId' => Table::factory(),
+            'total_capacity' => fake()->numberBetween(2,8),
+            'persons' => fake()->randomNumber(),
+            'shift_id' => Shift::factory(),
+            'adicional_info' => fake()->text(),
+            'allergens' => fake()->boolean(),
             'statusId' => 1,
-            'number' => fake()->randomNumber()
+            'number' => fake()->randomNumber()            
         ];
     }
 }

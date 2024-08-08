@@ -17,4 +17,9 @@ class Table extends Model
         'status'
     ];
 
+    public function detailBookings(): HasMany
+    {
+        return $this->hasMany(DetailBooking::class);
+    }
+
 }

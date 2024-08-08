@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Booking;
+use App\Models\DetailBooking;
 use App\Models\Table;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -16,11 +17,14 @@ class DetailBookingFactory extends Factory
      *
      * @return array<string, mixed>
      */
+
+    protected $model = DetailBooking::class;
+
     public function definition(): array
     {
         return [
-            'id_booking' => Booking::factory(),
-            'id_table' => Table::factory()
+            'booking_id' => Booking::factory(),
+            'table_id' => Table::factory()
         ];
     }
 }
