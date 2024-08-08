@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('bookings', function (Blueprint $table) {
+        Schema::create('detail_bookings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('userId');
-            // $table->unsignedBigInteger('tableId');
-            $table->dateTime('reservationDate');
-            $table->unsignedBigInteger('statusId');
+            $table->foreignId('booking_id')->constrained('bookings')->onDelete('cascade');
+            $table->foreignId('table_id')->constrained('tables')->onDelete('cascade');
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('bookings');
+        Schema::dropIfExists('detail_bookings');
     }
 };

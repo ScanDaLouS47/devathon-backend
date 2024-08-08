@@ -31,4 +31,14 @@ class Booking extends Model
     {
         return $this->belongsTo(Status::class, 'statusId');
     }
+
+    public function shift(): BelongsTo
+    {
+        return $this->belongsTo(Shift::class, 'shift_id');
+    }
+
+    public function detailBookings(): HasMany
+    {
+        return $this->hasMany(DetailBooking::class, 'booking_id');
+    }
 }

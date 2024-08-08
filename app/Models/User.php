@@ -62,11 +62,6 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Role::class);
     }
-
-    public function bookings(): HasMany
-    {
-        return $this->hasMany(Booking::class,'userId');
-    }
     
     public function userImage(): HasOne
     {
