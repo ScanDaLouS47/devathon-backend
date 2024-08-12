@@ -2,24 +2,28 @@
 
 namespace Database\Factories;
 
+use App\Models\Shift;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Shifts>
  */
-class ShiftsFactory extends Factory
+class ShiftFactory extends Factory
 {
     /**
      * Define the model's default state.
      *
      * @return array<string, mixed>
      */
+
+    protected $model = Shift::class;
+
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
-            'started_at' => $this->faker->time,
-            'finish_at' => $this->faker->time
+            'name' => fake()->name(),
+            'started_at' => fake()->time(),
+            'finish_at' => fake()->time()
         ];
     }
 }
