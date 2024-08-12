@@ -19,14 +19,14 @@ class UpdateUserRequest extends FormRequest
 
     public function rules(): array
     {
-        $user = User::find(Auth::user()->id)->first();
+        $user = auth()->user();
 
         return [
             'name' => "required|string|regex:/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ž' ]{3,50}$/",
             'lName' => "required|string|regex:/^[A-Za-zÀ-ÖØ-öø-ÿĀ-ž' ]{3,50}$/",
             'email' => 'required|email|unique:users,email,' . $user->id,
             'phone' => 'required|string|regex:/^\+?[1-9]\d{1,14}$/|unique:users,phone,' . $user->id,
-            'file' => ['nullable', ImageFile::image()->max( 3 * 1024 )]
+            'file' => ['nullable', ImageFile::image()->max(3 * 1024)]
         ];
     }
 

@@ -4,8 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -17,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('shift_id');
             $table->text('adicional_info')->nullable();
             $table->boolean('allergens');
-            // $table->dropColumn('table_id');
+            $table->dropColumn('tableId');
         });
     }
 
@@ -32,7 +31,7 @@ return new class extends Migration
             $table->dropColumn('shift_id');
             $table->dropColumn('adicional_info');
             $table->dropColumn('allergens');
-            $table->unsignedBigInteger('table_id');
+            $table->unsignedBigInteger('tableId');
         });
     }
 };
