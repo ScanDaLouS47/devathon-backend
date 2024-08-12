@@ -54,15 +54,15 @@ class UserController extends Controller
         try {
             $user = User::find(Auth::user()->id)->first();
             
-            // if ($request->hasFile('image')) {
-            //     Cloudinary::destroy($user->userImage->public_id);
+            if ($request->hasFile('image')) {
+                Cloudinary::destroy($user->userImage->public_id);
 
-            //     $img = $request->file('image')->storeOnCloudinary('users');
+                $img = $request->file('image')->storeOnCloudinary('users');
 
-            //     $user->userImage->public_id = $img->getSecurePath();
-            //     $user->userImage->url = $img->getPublicId();
-            //     $user->save();
-            // }
+                $user->userImage->public_id = $img->getSecurePath();
+                $user->userImage->url = $img->getPublicId();
+                $user->save();
+            }
 
             $user->update($request->validated());
 
