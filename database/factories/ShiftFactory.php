@@ -17,6 +17,7 @@ class ShiftFactory extends Factory
      */
 
     protected $model = Shift::class;
+    // para el push
 
     public function definition(): array
     {
