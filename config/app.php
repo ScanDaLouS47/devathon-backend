@@ -65,7 +65,16 @@ return [
     |
     */
 
-    'timezone' => env('APP_TIMEZONE', 'UTC'),
+    'timezone' => env('APP_TIMEZONE', 'Europe/Madrid'),
+
+    /*
+
+    I need to configurate this command line, but I don't know where put it
+
+    $userTimezone = 'Europe/Madrid'; 
+    $orderProcessedTime = $order->processed_at->timezone($userTimezone)->format('Y-m-d H:i:s')
+    
+    */
 
     /*
     |--------------------------------------------------------------------------
