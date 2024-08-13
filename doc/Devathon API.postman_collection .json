@@ -1,0 +1,2947 @@
+{
+	"info": {
+		"_postman_id": "7056b379-331c-4047-955e-b258d801a24b",
+		"name": "Devathon API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31411740"
+	},
+	"item": [
+		{
+			"name": "Credentials",
+			"item": [
+				{
+					"name": "getCookieXCSFR",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var cookies = pm.cookies;",
+									"",
+									"pm.collectionVariables.set(\"CSFR\", cookies.get('XSRF-TOKEN'));"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:8000/sanctum/csrf-cookie",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"sanctum",
+								"csrf-cookie"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success ok",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://127.0.0.1:8000/sanctum/csrf-cookie",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"sanctum",
+										"csrf-cookie"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.20"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 04 Aug 2024 16:12:11 GMT"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "XSRF-TOKEN=eyJpdiI6InNhT0JsT0kzeVVxU3hyeGtQZEhhYkE9PSIsInZhbHVlIjoid2E5a3ZOZUhyNWhYKzV2Q3JWWG44QVJvRTQ5QlBLV1BsT0xZaWM5S2pYc212bDgzUndUZVFlUGZkdklRUlNzSG14cG41VkRUNFFCdElqTW4rZjJtRTQ1SGtmNWNKTk95TTAvc2dEWDAzaWhsellDcWdmb0hUQWlNVEdHVnZta0ciLCJtYWMiOiJhYmQ0MjM5NDlkMWY1Y2MxZGNlYjEwNzEwOTYyYjMzYzkzN2JhNzk2Y2IzNjI3ZDcyYmMyM2QwMTgzYzI3YzQxIiwidGFnIjoiIn0%3D; expires=Sun, 04 Aug 2024 18:12:11 GMT; Max-Age=7200; path=/; samesite=lax"
+								},
+								{
+									"key": "Set-Cookie",
+									"value": "laravel_session=eyJpdiI6InFQY3lFOFJoNTZhU2RudERLVGE1RlE9PSIsInZhbHVlIjoiY0s2YVhKSDhiOFo5ajhZV1dQazdnKzhKaUg5dWxZMGhFcmN5KzJ1VUNmOHBnZFhEVXp3MXdPUGtMcmoya0o4dk1KTC9tbUVUS21hdHNUcU1BV0pORVNvS241QllqblV3RG9SY0pmZUFTQjJOVFhDbHNsVzRYclNPTnIwNmNBTHgiLCJtYWMiOiJkYTIwZGUxMDVhNmJmY2Y5YTNjNjZlZDMzZDIzMWU1NjY4MGM4MmM4YmVlODJiMjQ4Mjk0MTUxY2Q2NDg0ZmI4IiwidGFnIjoiIn0%3D; expires=Sun, 04 Aug 2024 18:12:11 GMT; Max-Age=7200; path=/; httponly; samesite=lax"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "postNewUser",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let response = pm.response.json();",
+									"",
+									"pm.test('status 201', function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"pm.test('ok true', function () {",
+									"    pm.expect(response.ok).to.eql(true);",
+									"});",
+									"",
+									"pm.test('msg validation', function () {",
+									"    pm.expect(response.msg).to.eql(\"Create user successfull\");",
+									"});",
+									"",
+									"pm.test(\"Data object has the correct structure\", function () {",
+									"    const responseData = pm.response.json();",
+									"",
+									"    pm.expect(responseData.data).to.be.an('object');",
+									"    pm.expect(responseData.data.email).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.data.role).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.data.name).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.data.lName).to.exist.and.to.be.a('string');",
+									"    pm.expect(responseData.data.phone).to.exist.and.to.be.a('string');",
+									"});",
+									"",
+									"",
+									"pm.test(\"Email is in a valid format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData.data.email).to.be.a('string').and.to.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/, \"Email should be in a valid format\");",
+									"});",
+									"",
+									"",
+									"pm.test(\"Phone number is in a valid format\", function () {",
+									"    const responseData = pm.response.json();",
+									"    ",
+									"    pm.expect(responseData).to.be.an('object');",
+									"    pm.expect(responseData.data.phone).to.match(/^\\d{10}$/);",
+									"});",
+									"",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let body = {",
+									"    \"name\": \"Josepingp\",",
+									"    \"lName\": \"El guapeton\",",
+									"    \"email\": \"examplemail@mail.com\",",
+									"    \"phone\": \"658780643\",",
+									"    \"sup_id\": \"oveuhleacotem\"",
+									"};",
+									"",
+									"pm.collectionVariables.set('create_body', JSON.stringify(body));",
+									"pm.collectionVariables.set('sup_id', body.sup_id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"User Ocho\",\n    \"lName\": \"User Ocho\",\n    \"email\": \"user.ocho@mail.com\",\n    \"phone\": \"657000888\",\n    \"password\": \"12300888\",\n    \"image_url\": \"None\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/create",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"create"
+							]
+						},
+						"description": "- **Description**: Create a new user"
+					},
+					"response": [
+						{
+							"name": "success ok",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Josepingp",
+											"type": "text"
+										},
+										{
+											"key": "lName",
+											"value": "El guapeton",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "examplemail@mail.com",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "6587806433",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "mepicaunhuevo",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "t4ymIKqZS/E70112024.06.14175253.png",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/v1/create",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.20"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 04 Aug 2024 16:12:57 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"id\": 16,\n        \"email\": \"examplemail@mail.com\",\n        \"role\": \"user\",\n        \"name\": \"Josepingp\",\n        \"lName\": \"El guapeton\",\n        \"phone\": \"6587806433\",\n        \"image_url\": null\n    },\n    \"msg\": \"Create user successfull\"\n}"
+						},
+						{
+							"name": "user already exist",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Josepingp",
+											"type": "text"
+										},
+										{
+											"key": "lName",
+											"value": "El guapeton",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "examplemail@mail.com",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "6587806433",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "mepicaunhuevo",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "t4ymIKqZS/E70112024.06.14175253.png",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/v1/create",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.20"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 04 Aug 2024 16:13:12 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"data\": null,\n    \"msg\": [\n        \"User already exist\"\n    ]\n}"
+						},
+						{
+							"name": "invalid mail",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Josepingp",
+											"type": "text"
+										},
+										{
+											"key": "lName",
+											"value": "El guapeton",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "examplemailmail.com",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "6587806433",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "mepicaunhuevo",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "t4ymIKqZS/E70112024.06.14175253.png",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/v1/create",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.20"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 04 Aug 2024 16:14:20 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"data\": null,\n    \"msg\": [\n        \"Email has invalid format\"\n    ]\n}"
+						},
+						{
+							"name": "invalid phone",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Josepingp",
+											"type": "text"
+										},
+										{
+											"key": "lName",
+											"value": "El guapeton",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "examplemail@mail.com",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "65878sfdsg06433sdf",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "mepicaunhuevo",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "t4ymIKqZS/E70112024.06.14175253.png",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/v1/create",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.20"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 04 Aug 2024 16:15:06 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"data\": null,\n    \"msg\": [\n        \"The phone field format is invalid.\"\n    ]\n}"
+						},
+						{
+							"name": "data missing",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "name",
+											"value": "Josepingp",
+											"type": "text"
+										},
+										{
+											"key": "lName",
+											"value": "El guapeton",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "examplemail@mail.com",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "6587806433",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "mepicaunhuevo",
+											"type": "text",
+											"disabled": true
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "t4ymIKqZS/E70112024.06.14175253.png",
+											"disabled": true
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/v1/create",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"create"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.20"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 04 Aug 2024 16:16:31 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"data\": null,\n    \"msg\": [\n        \"Required data is missing\"\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "postLogin",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const responseData = pm.response.json().data;",
+									"",
+									"pm.collectionVariables.set('token', responseData.token);",
+									"pm.collectionVariables.set('userId', responseData.user.id);",
+									"pm.collectionVariables.set('email', responseData.user.email);",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"dirij75152@maxturns.com\",\n    \"password\": \"f6b9ee3f-67cd-4f61-a7ef-c82b0de85660\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:8000/api/v1/login",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "8000",
+							"path": [
+								"api",
+								"v1",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "success ok",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "examplemail@mail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "mepicaunhuevo",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/v1/login",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"login"
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.20"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 04 Aug 2024 16:18:20 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"user\": {\n            \"id\": 17,\n            \"email\": \"examplemail@mail.com\",\n            \"role\": \"user\",\n            \"name\": \"Josepingp\",\n            \"lName\": \"El guapeton\",\n            \"phone\": \"6587806433\",\n            \"image_url\": null\n        },\n        \"token\": \"8|1jWsVAIHP6uYccy9M4uZ4RWVy2OWEey3EcHfDk1Wd9c97730\",\n        \"refreshToken\": \"D8jdz2PSVlIT0vZLT97D8ETnyIHnoM44gAqjGswq6B6JvBtOz8ZgYYDRYeoOcUg9\",\n        \"expires_at\": -2591999.9955349998\n    },\n    \"msg\": \"Login user successfull\"\n}"
+						},
+						{
+							"name": "bad credentials",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "examplemail@mail.com",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "mepicaunhuevo",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/v1/login",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"login"
+									]
+								}
+							},
+							"status": "Not Found",
+							"code": 404,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Host",
+									"value": "127.0.0.1:8000"
+								},
+								{
+									"key": "Connection",
+									"value": "close"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "PHP/8.2.20"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, private"
+								},
+								{
+									"key": "Date",
+									"value": "Sun, 04 Aug 2024 16:17:23 GMT"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Access-Control-Allow-Origin",
+									"value": "*"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"ok\": false,\n    \"data\": null,\n    \"msg\": \"Credentials are wrong\"\n}"
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Clients",
+			"item": [
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "getUserProfile",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"  pm.expect(pm.response.code).to.equal(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Validate the response schema for the presence of required fields\", function () {",
+											"    const responseData = pm.response.json().data;",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.email).to.exist;",
+											"    pm.expect(responseData.role).to.exist;",
+											"    pm.expect(responseData.name).to.exist;",
+											"    pm.expect(responseData.lName).to.exist;",
+											"    pm.expect(responseData.phone).to.exist;",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/profile",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"profile"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/{{sup_id}}",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"{{sup_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 26 Jul 2024 21:06:19 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"id\": 12,\n        \"email\": \"examplemail@mail.com\",\n        \"role\": \"user\",\n        \"name\": \"Josepingp\",\n        \"lName\": \"El guapeton\",\n        \"phone\": \"6587806433\"\n    },\n    \"msg\": \"\"\n}"
+								},
+								{
+									"name": "not_found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/dsfsvsd",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"dsfsvsd"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 26 Jul 2024 21:07:09 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": false,\n    \"data\": null,\n    \"msg\": \"User not found\"\n}"
+								}
+							]
+						},
+						{
+							"name": "getUsers",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}",
+									"host": [
+										"{{base_url}}"
+									]
+								},
+								"description": "- **Description**: Retrieve a list of all users.\n    \n\n### Response Body\n\nThe response is a JSON object with the following schema:\n\n``` json\n{\n    \"ok\": \"boolean\",\n    \"data\": [\n        {\n            \"id\": \"number\",\n            \"email\": \"string\",\n            \"role\": \"string\",\n            \"name\": \"string\",\n            \"lName\": \"string\",\n            \"phone\": \"string\"\n        },{\n            \"id\": \"number\",\n            \"email\": \"string\",\n            \"role\": \"string\",\n            \"name\": \"string\",\n            \"lName\": \"string\",\n            \"phone\": \"string\"\n        },{\n            \"id\": \"number\",\n            \"email\": \"string\",\n            \"role\": \"string\",\n            \"name\": \"string\",\n            \"lName\": \"string\",\n            \"phone\": \"string\"\n        },....\n    ],\n    \"msg\": \"string\"\n}\n\n ```"
+							},
+							"response": [
+								{
+									"name": "success_ok",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}",
+											"host": [
+												"{{base_url}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 26 Jul 2024 20:59:35 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": true,\n    \"data\": [\n        {\n            \"id\": 1,\n            \"email\": \"feil.vallie@example.net\",\n            \"role\": \"admin\",\n            \"name\": \"Prof. Jerrod McCullough\",\n            \"lName\": \"Jones\",\n            \"phone\": \"+1.814.714.3102\"\n        },\n        {\n            \"id\": 2,\n            \"email\": \"ioberbrunner@example.net\",\n            \"role\": \"user\",\n            \"name\": \"Miss Lysanne Haley\",\n            \"lName\": \"Lindgren\",\n            \"phone\": \"+1-772-644-8384\"\n        },\n        {\n            \"id\": 3,\n            \"email\": \"dorcas41@example.com\",\n            \"role\": \"user\",\n            \"name\": \"Mr. Easton Smitham I\",\n            \"lName\": \"Trantow\",\n            \"phone\": \"1-321-568-2666\"\n        },\n        {\n            \"id\": 4,\n            \"email\": \"cleuschke@example.net\",\n            \"role\": \"user\",\n            \"name\": \"Chadd Beer\",\n            \"lName\": \"Lesch\",\n            \"phone\": \"+1-347-798-3217\"\n        },\n        {\n            \"id\": 5,\n            \"email\": \"altenwerth.kayli@example.com\",\n            \"role\": \"user\",\n            \"name\": \"Dr. Rosemary Conn V\",\n            \"lName\": \"Buckridge\",\n            \"phone\": \"1-919-864-7304\"\n        },\n        {\n            \"id\": 6,\n            \"email\": \"pattie.gulgowski@example.net\",\n            \"role\": \"user\",\n            \"name\": \"Mr. Melany Runolfsdottir\",\n            \"lName\": \"Corkery\",\n            \"phone\": \"+1-516-441-0686\"\n        },\n        {\n            \"id\": 7,\n            \"email\": \"lcronin@example.com\",\n            \"role\": \"user\",\n            \"name\": \"Prof. Darius Hand\",\n            \"lName\": \"Will\",\n            \"phone\": \"1-619-224-2046\"\n        },\n        {\n            \"id\": 8,\n            \"email\": \"alphonso.schneider@example.com\",\n            \"role\": \"user\",\n            \"name\": \"Louie Klein\",\n            \"lName\": \"Dickinson\",\n            \"phone\": \"+1-754-469-6239\"\n        },\n        {\n            \"id\": 9,\n            \"email\": \"schinner.amani@example.net\",\n            \"role\": \"user\",\n            \"name\": \"Maya Kling DDS\",\n            \"lName\": \"Reichel\",\n            \"phone\": \"+1-202-855-6417\"\n        },\n        {\n            \"id\": 10,\n            \"email\": \"white.brendan@example.org\",\n            \"role\": \"user\",\n            \"name\": \"Lorna Crist\",\n            \"lName\": \"Hartmann\",\n            \"phone\": \"(516) 445-9740\"\n        },\n        {\n            \"id\": 11,\n            \"email\": \"eolson@example.org\",\n            \"role\": \"user\",\n            \"name\": \"Prof. Loraine Bauch\",\n            \"lName\": \"Walker\",\n            \"phone\": \"+1-719-626-4759\"\n        }\n    ],\n    \"msg\": \"\"\n}"
+								}
+							]
+						},
+						{
+							"name": "getUserByID",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"  pm.expect(pm.response.code).to.equal(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Validate the response schema for the presence of required fields\", function () {",
+											"    const responseData = pm.response.json().data;",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.email).to.exist;",
+											"    pm.expect(responseData.role).to.exist;",
+											"    pm.expect(responseData.name).to.exist;",
+											"    pm.expect(responseData.lName).to.exist;",
+											"    pm.expect(responseData.phone).to.exist;",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/15",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"15"
+									]
+								},
+								"description": "- **Description**: Retrieve user information by id.\n    \n\n#### Example URL\n\n`GET http://127.0.0.1:8000/api/v1/user/{id}`"
+							},
+							"response": [
+								{
+									"name": "not found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/sfdg",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"sfdg"
+											]
+										}
+									},
+									"status": "Not Found",
+									"code": 404,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 04 Aug 2024 16:22:47 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": false,\n    \"data\": null,\n    \"msg\": \"Resource not found\"\n}"
+								},
+								{
+									"name": "get user",
+									"originalRequest": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Content-Type",
+												"value": "application/json"
+											}
+										],
+										"url": {
+											"raw": "{{base_url}}/{{userId}}",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"{{userId}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 04 Aug 2024 16:42:10 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"id\": 18,\n        \"email\": \"examplemail@mail.com\",\n        \"role\": \"user\",\n        \"name\": \"Josepingp\",\n        \"lName\": \"El guapeton\",\n        \"phone\": \"6587806433\",\n        \"image_url\": null\n    },\n    \"msg\": \"\"\n}"
+								}
+							]
+						},
+						{
+							"name": "putUpdateUser",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json().data;",
+											"pm.collectionVariables.set('email', responseData.email);",
+											"",
+											"",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Content-Type is application/json\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response time is less than 200ms\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Data object should have the correct schema\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData.data).to.be.an('object');",
+											"  pm.expect(responseData.data).to.have.property('email').that.is.a('string');",
+											"  pm.expect(responseData.data).to.have.property('role').that.is.a('string');",
+											"  pm.expect(responseData.data).to.have.property('name').that.is.a('string');",
+											"  pm.expect(responseData.data).to.have.property('lName').that.is.a('string');",
+											"  pm.expect(responseData.data).to.have.property('phone').that.is.a('string');",
+											"});",
+											"",
+											"",
+											"pm.test(\"Ok true\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData.ok).to.eql(true);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "_method",
+											"value": "PUT",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Prueba Update",
+											"type": "text"
+										},
+										{
+											"key": "lName",
+											"value": "A ver si funciona",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "dirij75152@maxturns.com",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "6587806425",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/marcoslt93/Downloads/me4.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}",
+									"host": [
+										"{{base_url}}"
+									]
+								},
+								"description": "- **Description**: Update user information.\n    \n\n#### Example URL\n\n`POST http://127.0.0.1:8000/api/v1/user`"
+							},
+							"response": [
+								{
+									"name": "success ok",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "_method",
+													"value": "put",
+													"type": "text"
+												},
+												{
+													"key": "name",
+													"value": "Josepingp",
+													"type": "text"
+												},
+												{
+													"key": "lName",
+													"value": "Es la hostia",
+													"type": "text"
+												},
+												{
+													"key": "email",
+													"value": "examplemailmail@mail.com",
+													"type": "text"
+												},
+												{
+													"key": "phone",
+													"value": "6587806425",
+													"type": "text"
+												},
+												{
+													"key": "image",
+													"type": "file",
+													"src": "/home/user1/Imágenes/fotomia.jpej",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "{{base_url}}",
+											"host": [
+												"{{base_url}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 04 Aug 2024 16:23:47 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"id\": 1,\n        \"email\": \"examplemailmail@mail.com\",\n        \"role\": \"admin\",\n        \"name\": \"Josepingp\",\n        \"lName\": \"Es la hostia\",\n        \"phone\": \"6587806425\",\n        \"image_url\": null\n    },\n    \"msg\": \"Update successfull\"\n}"
+								},
+								{
+									"name": "another_user_data",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Josepim\",\n    \"lName\": \"Es la poya\",\n    \"email\": \"examplemail@mail.com\",\n    \"phone\": \"1-919-864-7304\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/{{sup_id}}",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"{{sup_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 26 Jul 2024 21:15:54 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": false,\n    \"data\": null,\n    \"msg\": [\n        \"Some data belongs to other users\"\n    ]\n}"
+								},
+								{
+									"name": "data_missing",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Josepim\",\n    \"lName\": \"Es la poya\",\n    \"email\": \"examplemail@mail.com\",\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/{{sup_id}}",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"{{sup_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 26 Jul 2024 21:16:40 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": false,\n    \"data\": null,\n    \"msg\": [\n        \"Required data is missing\"\n    ]\n}"
+								},
+								{
+									"name": "invalid_format",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Josepim\",\n    \"lName\": \"Es la poya\",\n    \"email\": \"examplemailmail.com\",\n    \"phone\": \"658780643\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/{{sup_id}}",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"{{sup_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 26 Jul 2024 21:18:07 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": false,\n    \"data\": null,\n    \"msg\": [\n        \"Email has invalid format\"\n    ]\n}"
+								}
+							]
+						},
+						{
+							"name": "getLogout",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true,
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "examplemail@mail.com",
+											"type": "text"
+										},
+										{
+											"key": "sup_id",
+											"value": "mepicaunhuevo",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/v1/logout",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"logout"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "logout",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://127.0.0.1:8000/api/v1/logout",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "8000",
+											"path": [
+												"api",
+												"v1",
+												"logout"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 04 Aug 2024 16:39:12 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": true,\n    \"data\": null,\n    \"msg\": \"User logout\"\n}"
+								}
+							]
+						},
+						{
+							"name": "deleteUser",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('status 200', function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test('ok true', function () {",
+											"    pm.expect(pm.response.json().ok).to.eql(true);",
+											"});",
+											"",
+											"pm.test('msg validation', function () {",
+											"    pm.expect(pm.response.json().msg).to.eql(\"Account deleted\");",
+											"});",
+											"",
+											"pm.test(\"Response time is less than 200ms\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response includes the required fields\", function () {",
+											"    const responseData = pm.response.json().data;",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.id).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.email).to.exist.and.to.be.a('string');",
+											"    pm.expect(responseData.role).to.exist.and.to.be.a('string');",
+											"    pm.expect(responseData.name).to.exist.and.to.be.a('string');",
+											"    pm.expect(responseData.lName).to.exist.and.to.be.a('string');",
+											"    pm.expect(responseData.phone).to.exist.and.to.be.a('string');",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.expect(pm.response.code).to.equal(200);",
+											"});",
+											"",
+											"// Store the id of the deleted user in an environment or global variable",
+											"var deletedUserId = pm.response.json().data.id;",
+											"pm.globals.set(\"deletedUserId\", deletedUserId);",
+											"// Retrieve the saved \"deletedUserId\" value from the variable",
+											"pm.test(\"Compare response against saved 'deletedUserId' value\", function() {",
+											"    var savedDeletedUserId = pm.globals.get(\"deletedUserId\");",
+											"    ",
+											"    var responseBody = pm.response.json();",
+											"    var responseDeletedUserId = responseBody.data.id;",
+											"    ",
+											"    pm.expect(responseDeletedUserId).to.equal(savedDeletedUserId);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}",
+									"host": [
+										"{{base_url}}"
+									]
+								},
+								"description": "### Delete User\n\n- **Response**: Returns data of the deleted user."
+							},
+							"response": [
+								{
+									"name": "delete account",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}",
+											"host": [
+												"{{base_url}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 04 Aug 2024 16:40:01 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"id\": 17,\n        \"email\": \"examplemail@mail.com\",\n        \"role\": \"user\",\n        \"name\": \"Josepingp\",\n        \"lName\": \"El guapeton\",\n        \"phone\": \"6587806433\",\n        \"image_url\": null\n    },\n    \"msg\": \"Account deleted\"\n}"
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "User",
+					"item": [
+						{
+							"name": "getUserProfile",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Response status code is 200\", function () {",
+											"  pm.expect(pm.response.code).to.equal(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response time is within an acceptable range\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Validate the response schema for the presence of required fields\", function () {",
+											"    const responseData = pm.response.json().data;",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.email).to.exist;",
+											"    pm.expect(responseData.role).to.exist;",
+											"    pm.expect(responseData.name).to.exist;",
+											"    pm.expect(responseData.lName).to.exist;",
+											"    pm.expect(responseData.phone).to.exist;",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"url": {
+									"raw": "{{base_url}}/profile",
+									"host": [
+										"{{base_url}}"
+									],
+									"path": [
+										"profile"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "success",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/{{sup_id}}",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"{{sup_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 26 Jul 2024 21:06:19 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"id\": 12,\n        \"email\": \"examplemail@mail.com\",\n        \"role\": \"user\",\n        \"name\": \"Josepingp\",\n        \"lName\": \"El guapeton\",\n        \"phone\": \"6587806433\"\n    },\n    \"msg\": \"\"\n}"
+								},
+								{
+									"name": "not_found",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}/dsfsvsd",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"dsfsvsd"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 26 Jul 2024 21:07:09 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": false,\n    \"data\": null,\n    \"msg\": \"User not found\"\n}"
+								}
+							]
+						},
+						{
+							"name": "putUpdateUser",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								},
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"const responseData = pm.response.json().data;",
+											"pm.collectionVariables.set('email', responseData.email);",
+											"",
+											"",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Content-Type is application/json\", function () {",
+											"    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response time is less than 200ms\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Data object should have the correct schema\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData.data).to.be.an('object');",
+											"  pm.expect(responseData.data).to.have.property('email').that.is.a('string');",
+											"  pm.expect(responseData.data).to.have.property('role').that.is.a('string');",
+											"  pm.expect(responseData.data).to.have.property('name').that.is.a('string');",
+											"  pm.expect(responseData.data).to.have.property('lName').that.is.a('string');",
+											"  pm.expect(responseData.data).to.have.property('phone').that.is.a('string');",
+											"});",
+											"",
+											"",
+											"pm.test(\"Ok true\", function () {",
+											"  const responseData = pm.response.json();",
+											"  ",
+											"  pm.expect(responseData.ok).to.eql(true);",
+											"});",
+											""
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "_method",
+											"value": "PUT",
+											"type": "text"
+										},
+										{
+											"key": "name",
+											"value": "Prueba Update",
+											"type": "text"
+										},
+										{
+											"key": "lName",
+											"value": "A ver si funciona",
+											"type": "text"
+										},
+										{
+											"key": "email",
+											"value": "dirij75152@maxturns.com",
+											"type": "text"
+										},
+										{
+											"key": "phone",
+											"value": "6587806425",
+											"type": "text"
+										},
+										{
+											"key": "image",
+											"type": "file",
+											"src": "/home/marcoslt93/Downloads/me4.png"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{base_url}}",
+									"host": [
+										"{{base_url}}"
+									]
+								},
+								"description": "- **Description**: Update user information.\n    \n\n#### Example URL\n\n`POST http://127.0.0.1:8000/api/v1/user`"
+							},
+							"response": [
+								{
+									"name": "success ok",
+									"originalRequest": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "formdata",
+											"formdata": [
+												{
+													"key": "_method",
+													"value": "put",
+													"type": "text"
+												},
+												{
+													"key": "name",
+													"value": "Josepingp",
+													"type": "text"
+												},
+												{
+													"key": "lName",
+													"value": "Es la hostia",
+													"type": "text"
+												},
+												{
+													"key": "email",
+													"value": "examplemailmail@mail.com",
+													"type": "text"
+												},
+												{
+													"key": "phone",
+													"value": "6587806425",
+													"type": "text"
+												},
+												{
+													"key": "image",
+													"type": "file",
+													"src": "/home/user1/Imágenes/fotomia.jpej",
+													"disabled": true
+												}
+											]
+										},
+										"url": {
+											"raw": "{{base_url}}",
+											"host": [
+												"{{base_url}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 04 Aug 2024 16:23:47 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"id\": 1,\n        \"email\": \"examplemailmail@mail.com\",\n        \"role\": \"admin\",\n        \"name\": \"Josepingp\",\n        \"lName\": \"Es la hostia\",\n        \"phone\": \"6587806425\",\n        \"image_url\": null\n    },\n    \"msg\": \"Update successfull\"\n}"
+								},
+								{
+									"name": "another_user_data",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Josepim\",\n    \"lName\": \"Es la poya\",\n    \"email\": \"examplemail@mail.com\",\n    \"phone\": \"1-919-864-7304\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/{{sup_id}}",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"{{sup_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 26 Jul 2024 21:15:54 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": false,\n    \"data\": null,\n    \"msg\": [\n        \"Some data belongs to other users\"\n    ]\n}"
+								},
+								{
+									"name": "data_missing",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Josepim\",\n    \"lName\": \"Es la poya\",\n    \"email\": \"examplemail@mail.com\",\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/{{sup_id}}",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"{{sup_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 26 Jul 2024 21:16:40 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": false,\n    \"data\": null,\n    \"msg\": [\n        \"Required data is missing\"\n    ]\n}"
+								},
+								{
+									"name": "invalid_format",
+									"originalRequest": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"name\": \"Josepim\",\n    \"lName\": \"Es la poya\",\n    \"email\": \"examplemailmail.com\",\n    \"phone\": \"658780643\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{base_url}}/{{sup_id}}",
+											"host": [
+												"{{base_url}}"
+											],
+											"path": [
+												"{{sup_id}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Fri, 26 Jul 2024 21:18:07 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": false,\n    \"data\": null,\n    \"msg\": [\n        \"Email has invalid format\"\n    ]\n}"
+								}
+							]
+						},
+						{
+							"name": "getLogout",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true,
+								"disabledSystemHeaders": {}
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "email",
+											"value": "examplemail@mail.com",
+											"type": "text"
+										},
+										{
+											"key": "sup_id",
+											"value": "mepicaunhuevo",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "http://127.0.0.1:8000/api/v1/logout",
+									"protocol": "http",
+									"host": [
+										"127",
+										"0",
+										"0",
+										"1"
+									],
+									"port": "8000",
+									"path": [
+										"api",
+										"v1",
+										"logout"
+									]
+								}
+							},
+							"response": [
+								{
+									"name": "logout",
+									"originalRequest": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://127.0.0.1:8000/api/v1/logout",
+											"protocol": "http",
+											"host": [
+												"127",
+												"0",
+												"0",
+												"1"
+											],
+											"port": "8000",
+											"path": [
+												"api",
+												"v1",
+												"logout"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 04 Aug 2024 16:39:12 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": true,\n    \"data\": null,\n    \"msg\": \"User logout\"\n}"
+								}
+							]
+						},
+						{
+							"name": "deleteUser",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test('status 200', function () {",
+											"    pm.response.to.have.status(200);",
+											"});",
+											"",
+											"pm.test('ok true', function () {",
+											"    pm.expect(pm.response.json().ok).to.eql(true);",
+											"});",
+											"",
+											"pm.test('msg validation', function () {",
+											"    pm.expect(pm.response.json().msg).to.eql(\"Account deleted\");",
+											"});",
+											"",
+											"pm.test(\"Response time is less than 200ms\", function () {",
+											"  pm.expect(pm.response.responseTime).to.be.below(200);",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response includes the required fields\", function () {",
+											"    const responseData = pm.response.json().data;",
+											"    ",
+											"    pm.expect(responseData).to.be.an('object');",
+											"    pm.expect(responseData.id).to.exist.and.to.be.a('number');",
+											"    pm.expect(responseData.email).to.exist.and.to.be.a('string');",
+											"    pm.expect(responseData.role).to.exist.and.to.be.a('string');",
+											"    pm.expect(responseData.name).to.exist.and.to.be.a('string');",
+											"    pm.expect(responseData.lName).to.exist.and.to.be.a('string');",
+											"    pm.expect(responseData.phone).to.exist.and.to.be.a('string');",
+											"});",
+											"",
+											"",
+											"pm.test(\"Response status code is 200\", function () {",
+											"    pm.expect(pm.response.code).to.equal(200);",
+											"});",
+											"",
+											"// Store the id of the deleted user in an environment or global variable",
+											"var deletedUserId = pm.response.json().data.id;",
+											"pm.globals.set(\"deletedUserId\", deletedUserId);",
+											"// Retrieve the saved \"deletedUserId\" value from the variable",
+											"pm.test(\"Compare response against saved 'deletedUserId' value\", function() {",
+											"    var savedDeletedUserId = pm.globals.get(\"deletedUserId\");",
+											"    ",
+											"    var responseBody = pm.response.json();",
+											"    var responseDeletedUserId = responseBody.data.id;",
+											"    ",
+											"    pm.expect(responseDeletedUserId).to.equal(savedDeletedUserId);",
+											"});"
+										],
+										"type": "text/javascript",
+										"packages": {}
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{token}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "{{base_url}}",
+									"host": [
+										"{{base_url}}"
+									]
+								},
+								"description": "### Delete User\n\n- **Response**: Returns data of the deleted user."
+							},
+							"response": [
+								{
+									"name": "delete account",
+									"originalRequest": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{base_url}}",
+											"host": [
+												"{{base_url}}"
+											]
+										}
+									},
+									"status": "OK",
+									"code": 200,
+									"_postman_previewlanguage": "json",
+									"header": [
+										{
+											"key": "Host",
+											"value": "127.0.0.1:8000"
+										},
+										{
+											"key": "Connection",
+											"value": "close"
+										},
+										{
+											"key": "X-Powered-By",
+											"value": "PHP/8.2.20"
+										},
+										{
+											"key": "Cache-Control",
+											"value": "no-cache, private"
+										},
+										{
+											"key": "Date",
+											"value": "Sun, 04 Aug 2024 16:40:01 GMT"
+										},
+										{
+											"key": "Content-Type",
+											"value": "application/json"
+										},
+										{
+											"key": "Access-Control-Allow-Origin",
+											"value": "*"
+										}
+									],
+									"cookie": [],
+									"body": "{\n    \"ok\": true,\n    \"data\": {\n        \"id\": 17,\n        \"email\": \"examplemail@mail.com\",\n        \"role\": \"user\",\n        \"name\": \"Josepingp\",\n        \"lName\": \"El guapeton\",\n        \"phone\": \"6587806433\",\n        \"image_url\": null\n    },\n    \"msg\": \"Account deleted\"\n}"
+								}
+							]
+						}
+					]
+				}
+			],
+			"description": "These services provide everything necessary for administering application users.",
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{CSFR}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{CSFR}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "http://127.0.0.1:8000/api/v1/user",
+			"type": "string"
+		},
+		{
+			"key": "CSFR",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "create_body",
+			"value": "",
+			"disabled": true
+		},
+		{
+			"key": "userId",
+			"value": ""
+		},
+		{
+			"key": "update_body",
+			"value": ""
+		},
+		{
+			"key": "ApiKey",
+			"value": "eyJpdiI6IlhDbTkzc1QwWTN3Ulk1VUZxS2hReUE9PSIsInZhbHVlIjoiaTcvYTJrck56SWlXZGNSUzJtODgrUT09IiwibWFjIjoiMWUxOWEwZmU4Mzk5Y2YyNmVkMGVjYjk0MDU5MzA0MmExZWI0MGJkNWQzMDU4YzJkMWQ4MTcyYzE3ZmVlNjg0MCIsInRhZyI6IiJ9",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "Authorization_key",
+			"value": "x-api-key",
+			"type": "string"
+		},
+		{
+			"key": "token",
+			"value": ""
+		},
+		{
+			"value": "",
+			"type": "string",
+			"disabled": true
+		},
+		{
+			"key": "id",
+			"value": ""
+		},
+		{
+			"key": "password",
+			"value": ""
+		},
+		{
+			"key": "email",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "create_body",
+			"value": ""
+		},
+		{
+			"key": "sup_id",
+			"value": ""
+		}
+	]
+}
