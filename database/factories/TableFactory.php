@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Shifts>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Table>
  */
-class ShiftsFactory extends Factory
+class TableFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,9 +17,10 @@ class ShiftsFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
-            'started_at' => $this->faker->time,
-            'finish_at' => $this->faker->time
+            'number' => fake()->randomNumber(),
+            'size' => fake()->numberBetween(1,6),
+            'img' => '',
+            'status' => 'active'
         ];
     }
 }

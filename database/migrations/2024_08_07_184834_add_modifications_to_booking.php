@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('shift_id');
             $table->text('adicional_info')->nullable();
             $table->boolean('allergens');
-            $table->dropColumn('table_id');
+            // $table->dropColumn('table_id');
         });
     }
 
