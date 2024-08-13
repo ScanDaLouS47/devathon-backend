@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\BaseResponse;
 use App\Http\Requests\UpdateUserRequest;
 use App\Http\Resources\UserResource;
+use App\Models\UserImage;
 use App\NotFoundResponse;
 use Exception;
 use Illuminate\Support\Facades\Auth;
@@ -52,20 +53,29 @@ class UserController extends Controller
     public function update(UpdateUserRequest $request): JsonResponse
     {
         try {
-            $user = User::find(Auth::user()->id)->first();
-            
-            // if ($request->hasFile('image')) {
-            //     Cloudinary::destroy($user->userImage->public_id);
+            $user = auth()->user();
 
-            //     $img = $request->file('image')->storeOnCloudinary('users');
+            if ($request->hasFile('image')) {
+                if (is_null($user->userImage)) {
+                    $img = $request->file('image')->storeOnCloudinary('users');
+                    UserImage::create([
+                        "url" => $img->getSecurePath(),
+                        "public_id" => $img->getPublicId(),
+                        "user_id" => $user->id
+                    ]);
+                } else {
+                    Cloudinary::destroy($user->userImage->public_id);
 
-            //     $user->userImage->public_id = $img->getSecurePath();
-            //     $user->userImage->url = $img->getPublicId();
-            //     $user->save();
-            // }
+                    $userImage = UserImage::where('user_id', $user->id)->first();
+                    $img = $request->file('image')->storeOnCloudinary('users');
+                    $userImage->url = $img->getSecurePath();
+                    $userImage->public_id = $img->getPublicId();
+                    $userImage->save();
+                }
+            }
 
+            $user = User::find($user->id);
             $user->update($request->validated());
-
             return BaseResponse::response(true, new UserResource($user), 'Update successfull', 200);
         } catch (Exception $e) {
             return BaseResponse::response(false, null, $e->getMessage(), 500);

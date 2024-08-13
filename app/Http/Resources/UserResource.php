@@ -21,7 +21,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'lName' => $this->lName,
             'phone' => $this->phone,
-            'image_url' => $this->userImage ? $this->userImage->url : null,
+            'image_url' => ($this->userImage) ? $this->userImage->url : null,
         ];
     }
 }
