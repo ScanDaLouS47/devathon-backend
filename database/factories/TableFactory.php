@@ -18,7 +18,7 @@ class TableFactory extends Factory
     {
         return [
             'number' => fake()->randomNumber(2),
-            'size' => fake()->numberBetween(1, 6),
+            'size' => fake()->numberBetween(2, 6),
             'status' => 'active'
         ];
     }
