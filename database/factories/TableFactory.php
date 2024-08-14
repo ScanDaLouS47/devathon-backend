@@ -17,9 +17,8 @@ class TableFactory extends Factory
     public function definition(): array
     {
         return [
-            'number' => fake()->randomNumber(),
-            'size' => fake()->numberBetween(1,6),
-            'img' => '',
+            'number' => fake()->randomNumber(2),
+            'size' => fake()->numberBetween(1, 6),
             'status' => 'active'
         ];
     }
