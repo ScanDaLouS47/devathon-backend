@@ -13,7 +13,7 @@ return new class extends Migration {
         Schema::table('bookings', function (Blueprint $table) {
             $table->unsignedInteger('persons');
             $table->unsignedBigInteger('shift_id');
-            $table->text('adicional_info')->nullable();
+            $table->text('additional_info')->nullable();
             $table->boolean('allergens');
             $table->dropColumn('tableId');
         });
@@ -27,7 +27,7 @@ return new class extends Migration {
         Schema::table('bookings', function (Blueprint $table) {
             $table->dropColumn('persons');
             $table->dropColumn('shift_id');
-            $table->dropColumn('adicional_info');
+            $table->dropColumn('additional_info');
             $table->dropColumn('allergens');
             $table->unsignedBigInteger('tableId');
         });

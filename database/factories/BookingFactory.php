@@ -21,10 +21,10 @@ class BookingFactory extends Factory
     {
         return [
             'reservationDate' => fake()->dateTimeThisMonth(),
-            'userId' => User::factory(),
+            'user_id' => User::factory(),
             'persons' => fake()->numberBetween(0, 10),
             'shift_id' => fake()->numberBetween(1, 4),
-            'adicional_info' => fake()->text(),
+            'additional_info' => fake()->text(),
             'allergens' => fake()->boolean(),
             'statusId' => 1,
         ];

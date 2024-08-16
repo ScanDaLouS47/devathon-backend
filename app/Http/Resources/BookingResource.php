@@ -17,9 +17,11 @@ class BookingResource extends JsonResource
         return [
             'id' => $this->id,
             'reservationDate' => $this->reservationDate,
-            'user' => new UserResource($this->whenLoaded('user')),
-            'table' => new TableResource($this->whenLoaded('table')),
-            'status' => new StatusResource($this->whenLoaded('status'))
+            'tables' => $this->detailBookings->pluck('table_id')->toArray(),
+            'persons' => $this->persons,
+            'additional_info' => $this->additional_info,
+            'allergens' => $this->allergens ? 'alergicos' : 'no alergicos',
+            'shift' => $this->shift->name,
         ];
     }
 }

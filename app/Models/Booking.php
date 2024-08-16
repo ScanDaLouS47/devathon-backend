@@ -13,11 +13,10 @@ class Booking extends Model
 
     protected $fillable = [
         'reservationDate',
-        'userId',
-        'total_capacity',
+        'user_id',
         'persons',
         'shift_id',
-        'adicional_info',
+        'additional_info',
         'allergens',
         'statusId'
     ];

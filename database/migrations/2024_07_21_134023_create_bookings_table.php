@@ -12,9 +12,9 @@ return new class extends Migration {
     {
         Schema::create('bookings', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('userId');
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('tableId');
-            $table->dateTime('reservationDate');
+            $table->date('reservationDate');
             $table->unsignedBigInteger('statusId');
             $table->timestamps();
         });
