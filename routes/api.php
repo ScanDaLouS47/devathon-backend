@@ -27,13 +27,15 @@ Route::group([
     Route::put('/user', [UserController::class, 'update']);
     Route::get('/user/{user}', [UserController::class, 'show']);
     Route::get('logout', [AuthController::class, 'logout']);
+
+    Route::post('/booking', [BookingController::class, 'store']);
 });
 
 
 Route::resource('/table', TableController::class);
-Route::get('/table_available', [TableController::class,'available']);
+Route::get('/table_available', [TableController::class, 'available']);
 Route::get('/mybookings/{id}', [BookingController::class, 'mybookings']);
-Route::resource('/booking', BookingController::class);
+Route::resource('/booking', BookingController::class)->except(['store']);
 
 
 Route::fallback(function () {

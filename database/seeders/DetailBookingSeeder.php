@@ -12,20 +12,32 @@ class DetailBookingSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     */    
+     */
 
     public function run(): void
-    {      
+    {
 
-        for ($i = 0; $i < 10; $i++) {
-            $booking = Booking::factory()->create();
-            $table = Table::factory()->create();
-            
+        Booking::all()->each(function ($booking) {
             DetailBooking::factory()->create([
                 'booking_id' => $booking->id,
-                'table_id' => $table->id,
+                'table_id' => fake()->numberBetween(0, 25)
             ]);
-        }
+            DetailBooking::factory()->create([
+                'booking_id' => $booking->id,
+                'table_id' => fake()->numberBetween(0, 25)
+            ]);
+        });
+
+
+
+        // for ($i = 0; $i < 10; $i++) {
+        //     $table = Table::factory()->create();
+
+        //     DetailBooking::factory()->create([
+        //         'booking_id' => $booking->id,
+        //         'table_id' => $table->id,
+        //     ]);
+        // }
 
         // DetailBooking::factory()->has(Booking::factory()->count(3), 'bookings')->create();  
         // DetailBooking::factory(10)->create()->each(function ($booking){

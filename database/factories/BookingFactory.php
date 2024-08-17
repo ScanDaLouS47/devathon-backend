@@ -20,15 +20,13 @@ class BookingFactory extends Factory
     public function definition(): array
     {
         return [
-            'reservationDate' => fake()->date(),
-            'userId' => User::factory(),
-            'total_capacity' => fake()->numberBetween(2,8),
-            'persons' => fake()->randomNumber(),
-            'shift_id' => Shift::factory(),
-            'adicional_info' => fake()->text(),
+            'reservationDate' => fake()->dateTimeThisMonth(),
+            'user_id' => User::factory(),
+            'persons' => fake()->numberBetween(0, 10),
+            'shift_id' => fake()->numberBetween(1, 4),
+            'additional_info' => fake()->text(),
             'allergens' => fake()->boolean(),
             'statusId' => 1,
-            'number' => fake()->randomNumber()            
         ];
     }
 }

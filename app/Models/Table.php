@@ -13,7 +13,6 @@ class Table extends Model
     protected $fillable = [
         'number',
         'size',
-        'img',
         'status'
     ];
 

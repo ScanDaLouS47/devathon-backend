@@ -25,23 +25,18 @@ class CreateBookingRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'reservationDate' => ['required', 'date', function ($attribute, $value, $fail) {
-                if (strtotime($value) <= time()) {
-                    $fail('The ' . $attribute . ' must be a date before the current date.');
-                }
-            }],
-            'userId' => 'required|exists:users,id',
-            'tableId' => 'required|exists:tables,id',
-            'statusId' => 'required|exists:statuses,id'                
+            'reservationDate' => 'required|date|after_or_equal:today',
+            'persons' => 'required|int|min:1|max:10',
+            'shift_id' => 'required|int|min:1|max:4',
+            'additional_info' => 'text',
+            'allergens' => 'bool'
         ];
     }
 
     public function messages()
     {
-        return [            
-            'required' => 'Required data is missing',            
-            'date' => 'Any field has invalid format',
-            'exists' => 'Any field has invalid format'            
+        return [
+            'required' => 'Required data is missing',
         ];
     }
 
@@ -49,7 +44,7 @@ class CreateBookingRequest extends FormRequest
     {
         $errors = (new ValidationException($validator))->errors();
         $errors = array_values($errors);
-        
+
         throw new HttpResponseException(
             response()->json([
                 'ok' => false,
