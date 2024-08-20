@@ -28,7 +28,7 @@ class BookingController extends Controller
     public function index(): JsonResponse
     {
         try {
-            return BaseResponse::response(true, BookingResource::collection(Booking::with(['user', 'table', 'status'])->get()), '', 200);
+            return BaseResponse::response(true, BookingResource::collection(Booking::with(['user', 'status'])->get()), '', 200);
         } catch (Exception $e) {
             return BaseResponse::response(false, null, $e->getMessage(), 500);
         }
@@ -112,9 +112,7 @@ class BookingController extends Controller
     {
         try {
             $formattedDate = Carbon::today()->toDateString();
-            $booking = Booking::where('reservationDate', '>', $formattedDate)->where('number', $id)->whereHas('table', function ($q) use ($id) {
-                $q->where('number', $id);
-            })->with(['user', 'table', 'status'])->get();
+            $booking = Booking::where('reservationDate', '>', $formattedDate)->where('number', $id)->with(['user', 'status'])->get();
             if (!$booking->isEmpty()) {
                 return BaseResponse::response(true, BookingResource::collection($booking), 'Reserves found', 200);
             }
@@ -190,7 +188,7 @@ class BookingController extends Controller
             $number = $request->query('number');
             $query = Booking::query();
             $query->whereHas('user', function ($q) use ($id) {
-                $q->where('sup_id', 'like', '%' . $id . '%');
+                $q->where('id', $id);
             });
 
             ($filter) && $query->where('reservationDate', 'like', '%' . $filter . '%');
@@ -198,11 +196,11 @@ class BookingController extends Controller
             ($active) && $query->whereHas('status', function ($q) use ($active) {
                 $q->where('name', $active);
             });
-            ($table) && $query->whereHas('table', function ($q) use ($table) {
-                $q->where('number', $table);
-            });
+            // ($table) && $query->whereHas('table', function ($q) use ($table) {
+            //     $q->where('number', $table);
+            // });
 
-            $query->with(['user', 'table', 'status']);
+            $query->with(['user', 'status']);
             $booking = $query->get();
 
             if (!$booking->isEmpty()) {
