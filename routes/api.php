@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
+use App\Http\Controllers\DetailBookingController;
 use App\Http\Controllers\TableController;
 use App\Http\Controllers\UserController;
 use App\Http\Middleware\Cors;
@@ -36,6 +37,8 @@ Route::resource('/table', TableController::class);
 Route::get('/table_available', [TableController::class, 'available']);
 Route::get('/mybookings/{id}', [BookingController::class, 'mybookings']);
 Route::resource('/booking', BookingController::class)->except(['store']);
+
+Route::get('/detail_booking', [DetailBookingController::class, 'all']);
 
 
 Route::fallback(function () {
