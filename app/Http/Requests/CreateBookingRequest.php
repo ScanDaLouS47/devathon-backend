@@ -28,7 +28,7 @@ class CreateBookingRequest extends FormRequest
             'reservationDate' => 'required|date|after_or_equal:today',
             'persons' => 'required|int|min:1|max:10',
             'shift_id' => 'required|int|min:1|max:4',
-            'additional_info' => 'text',
+            'additional_info' => 'string',
             'allergens' => 'bool'
         ];
     }
