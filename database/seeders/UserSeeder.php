@@ -25,6 +25,18 @@ class UserSeeder extends Seeder
             'role_id' => 2
         ]);
 
+        User::create([
+            'email' => 'vohac64895@iteradev.com',
+            'name' => 'Marcos',
+            'lName' => 'El Guapeton',
+            'phone' => '+34123456123',
+            'status' => 'active',
+            'password' => 'b4c1eca2-8d7e-48db-bb76-dd1e96107b0a',
+            'role_id' => 2
+        ]);
+
+
+
         User::factory(10)->create(['role_id' => 1]);
     }
 }
