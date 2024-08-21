@@ -89,7 +89,7 @@ class BookingController extends Controller
                 'shift_id' => $shiftId,
                 'user_id' => Auth::user()->id,
                 'additional_info' => $validatedData['additional_info'] ?? null,
-                'allergens' => $validatedData['allergens'],
+                'allergens' => $validatedData['allergens'] ?? false,
                 'persons' => $validatedData['persons'],
                 'statusId' => 1
             ]);
