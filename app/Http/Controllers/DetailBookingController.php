@@ -110,7 +110,7 @@ class DetailBookingController extends Controller
                             $shiftArray['end'] = $end->format('Y-m-d H:i:s');
                             $retArray[] = [
                                 'id' => $currentDate->format('Y-m-d H:i:s'),
-                                'turno' => $turno->name,
+                                'title' => $turno->name,
                                 'start' => $start->format('Y-m-d H:i:s'),
                                 'end' => $end->format('Y-m-d H:i:s'),
                                 'status' => ($currentDate < now()) ? 'expired' : 'available'
