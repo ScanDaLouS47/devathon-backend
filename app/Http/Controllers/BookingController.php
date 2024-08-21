@@ -112,13 +112,14 @@ class BookingController extends Controller
     {
         try {
             $formattedDate = Carbon::today()->toDateString();
-            $booking = Booking::where('reservationDate', '>', $formattedDate)->where('number', $id)->with(['user', 'status'])->get();
-            if (!$booking->isEmpty()) {
-                return BaseResponse::response(true, BookingResource::collection($booking), 'Reserves found', 200);
-            }
-            $booking = Booking::whereHas('user', function ($q) use ($id) {
+            // $booking = Booking::where('reservationDate', '>=', $formattedDate)->with(['user', 'status'])->get();
+            // // $booking = Booking::where('reservationDate', '>=', $formattedDate)->where('number', $id)->with(['user', 'status'])->get();
+            // if (!$booking->isEmpty()) {
+            //     return BaseResponse::response(true, BookingResource::collection($booking), 'Reserves found', 200);
+            // }
+            $booking = Booking::where('reservationDate', '>=', $formattedDate)->whereHas('user', function ($q) use ($id) {
                 $q->where('phone', 'like', '%' . $id . '%')->orWhere('dni', 'like', '%' . $id . '%');
-            })->with(['user', 'table', 'status'])->get();    //where('id',$id)->where('status','active')->first();
+            })->with(['user', 'status'])->get();    //where('id',$id)->where('status','active')->first();
             if (!$booking->isEmpty()) {
                 return BaseResponse::response(true, BookingResource::collection($booking), 'Reserves found', 200);
             }
@@ -199,6 +200,31 @@ class BookingController extends Controller
             // ($table) && $query->whereHas('table', function ($q) use ($table) {
             //     $q->where('number', $table);
             // });
+
+            $query->with(['user', 'status']);
+            $booking = $query->get();
+
+            if (!$booking->isEmpty()) {
+                return BaseResponse::response(true, BookingResource::collection($booking), 'Reserves found', 200);
+            }
+            return BaseResponse::response(true, $booking, 'Reserves not found', 200);
+        } catch (Exception $e) {
+            return BaseResponse::response(false, null, $e->getMessage(), 500);
+        }
+    }
+
+    /**
+     * Get the today reserves.
+     */
+    public function todaybookings(): JsonResponse
+    {
+        try {
+            $active = 'active';
+            $query = Booking::query();
+            $query->whereDate('reservationDate', Carbon::today());
+            $query->whereHas('status', function ($q) use ($active) {
+                $q->where('name', $active);
+            });                        
 
             $query->with(['user', 'status']);
             $booking = $query->get();
