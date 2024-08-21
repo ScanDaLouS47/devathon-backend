@@ -47,7 +47,7 @@ class AuthController extends Controller
     public function login(Request $request): JsonResponse
     {
         try {
-            if ( !Auth::attempt($request->only(['email', 'password'])) ){
+            if (!Auth::attempt($request->only(['email', 'password']))) {
                 return BaseResponse::response(false, null, 'Credentials are wrong', 404);
             }
 
@@ -84,7 +84,7 @@ class AuthController extends Controller
     public function logout(): JsonResponse
     {
         try {
-            auth()->user()->tokens()->delete(); 
+            auth()->user()->tokens()->delete();
             return BaseResponse::response(true, null, 'User logout', 200);
         } catch (Exception $e) {
             return BaseResponse::response(false, $e, $e->getMessage(), 500);
