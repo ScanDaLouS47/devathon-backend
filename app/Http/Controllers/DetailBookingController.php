@@ -100,7 +100,7 @@ class DetailBookingController extends Controller
                                 (int)date('i', strtotime($time)),
                                 (int)date('s', strtotime($time))
                             );
-                            $end = new DateTime($date);
+                            $end = $currentDate; // new DateTime($date);
                             $end->setTime(
                                 (int)date('H', strtotime($endTime)), 
                                 (int)date('i', strtotime($endTime)),
