@@ -100,7 +100,7 @@ class DetailBookingController extends Controller
                                 (int)date('i', strtotime($time)),
                                 (int)date('s', strtotime($time))
                             );
-                            $end = new DateTime($date);
+                            $end = $currentDate; // new DateTime($date);
                             $end->setTime(
                                 (int)date('H', strtotime($endTime)), 
                                 (int)date('i', strtotime($endTime)),
@@ -111,8 +111,8 @@ class DetailBookingController extends Controller
                             $retArray[] = [
                                 'id' => $currentDate->format('Y-m-d H:i:s'),
                                 'title' => $turno->name,
-                                'start' => $start->format('Y-m-d H:i:s'),
-                                'end' => $end->format('Y-m-d H:i:s'),
+                                'start' => $start->format('Y-m-d\TH:i:s'),
+                                'end' => $end->format('Y-m-d\TH:i:s'),
                                 'status' => ($currentDate < now()) ? 'expired' : 'available'
                             ];
                         }              
