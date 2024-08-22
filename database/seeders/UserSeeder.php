@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
             'phone' => '+34123456123',
             'status' => 'active',
             'password' => 'b4c1eca2-8d7e-48db-bb76-dd1e96107b0a',
-            'role_id' => 2
+            'role_id' => 1
         ]);
 
 
