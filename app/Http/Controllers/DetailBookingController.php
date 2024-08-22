@@ -30,8 +30,7 @@ class DetailBookingController extends Controller
             $year = Carbon::parse($date)->year;
 
             $detailBookings = DetailBooking::with(['booking','table'])->whereHas('booking', function ($query) use ($month,$year){ $query->whereMonth('reservationDate', $month)->whereYear('reservationDate', $year); })->orderBy(Booking::select('reservationDate')->whereColumn('bookings.id', 'detail_bookings.booking_id'), 'asc')->get();
-            $groupedByShift = $detailBookings->groupBy(function ($detailBooking){ return $detailBooking->booking->shift->name; });
-            // Log::info($groupedByShift);
+            $groupedByShift = $detailBookings->groupBy(function ($detailBooking){ return $detailBooking->booking->shift->name; });            
 
             $returnBookings = [];
             $capacity = Table::where('status', 'active')->sum('size');
@@ -66,30 +65,35 @@ class DetailBookingController extends Controller
                 foreach($details as $item){
                     $unavailable += $item->booking->persons;
                 }                
-
-                $diffPersons = $capacity - $unavailable;                
+                $diffPersons = $capacity - $unavailable;                                
 
                 $shiftArray['status'] = ($diffPersons >= $persons) ? 'available' : 'full';
                 $returnBookings[] = $shiftArray;
 
-            }    
+            }                
             
             $startDate = new DateTime("$year-$month-01");
             $daysInMonth = $startDate->format('t');
             $retArray = [];
             $turnos = Shift::all();
 
-            for ($day = 1; $day <= $daysInMonth; $day++) {
-                // Crear una fecha con el día actual
+            for ($day = 1; $day <= $daysInMonth; $day++) {                
                 $currentDate = new DateTime("$year-$month-$day");
                     foreach($turnos as $turno){
+                        $found = [];
+                        foreach ($returnBookings as $obj) {
+                            $formCurrentDate = $currentDate->format('Y-m-d');
+                            $formStartDate = new DateTime($obj['start']);
+                            $formattedStartDate = $formStartDate->format('Y-m-d');                            
 
-                        $found = array_filter($returnBookings, function ($obj) use ($currentDate, $turno) {
-                            return $obj['start'] === $currentDate && $obj['turno'] === $turno;
-                        });
+                            if ($formattedStartDate === $formCurrentDate && $obj['turno'] === $turno->name) {
+                                $found[] = $obj;
+                            }
+                        }
 
-                        if(!empty($found)){
-                            $retArray[] = $found;
+                        if(count($found) > 0){                            
+                            ($currentDate < now()) && $found[0]['status'] = 'expired';
+                            $retArray[] = $found[0];
                         }else{
                             $time = date('H:i:s', strtotime($turno->started_at));
                             $endTime = date('H:i:s', strtotime($turno->finish_at));
@@ -113,11 +117,10 @@ class DetailBookingController extends Controller
                                 'title' => $turno->name,
                                 'start' => $start->format('Y-m-d\TH:i:s'),
                                 'end' => $end->format('Y-m-d\TH:i:s'),
-                                'status' => ($currentDate < now()) ? 'expired' : 'available'
+                                'status' => ($currentDate < now()) ? 'expired' : $shiftArray['status']
                             ];
                         }              
-                    }
-                                                
+                    }                                                
             }
 
             return BaseResponse::response(true,$retArray,'', 200);            
@@ -125,5 +128,4 @@ class DetailBookingController extends Controller
             return BaseResponse::response(false, null, $e->getMessage(), 500);
         }
     }
-
 }
