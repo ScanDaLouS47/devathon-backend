@@ -217,7 +217,7 @@ class BookingController extends Controller
     {
         try {
             $userId = auth()->user()->id;
-            $bookings = Booking::where('user_id', $userId)->get();
+            $bookings = Booking::where('user_id', $userId)->where('status_id', '1')->get();
 
             if ($request->query('active')) {
                 $status = $request->query('active');
@@ -238,12 +238,15 @@ class BookingController extends Controller
 
                 $bookings = $bookings->where('persons', $persons);
             }
-
-            return BaseResponse::response(true, $bookings, 'Reserves not found', 200);
+            if ($bookings->isEmpty()) {
+                return BaseResponse::response(true, BookingResource::collection($bookings), 'Reserves not found', 200);
+            }
+            return BaseResponse::response(true, BookingResource::collection($bookings), 'Reserves found', 200);
         } catch (Exception $e) {
             return BaseResponse::response(false, null, $e->getMessage(), 500);
         }
     }
+
 
     /**
      * Get the today reserves.
