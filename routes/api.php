@@ -31,12 +31,13 @@ Route::group([
     Route::get('logout', [AuthController::class, 'logout']);
 
     Route::post('/booking', [BookingController::class, 'store']);
+    Route::get('/mybookings2', [BookingController::class, 'mybookings2']);
 });
+Route::get('/mybookings/{id}', [BookingController::class, 'mybookings']);
 
 
 Route::resource('/table', TableController::class);
 Route::get('/table_available', [TableController::class, 'available']);
-Route::get('/mybookings/{id}', [BookingController::class, 'mybookings']);
 Route::resource('/booking', BookingController::class)->except(['store']);
 
 Route::get('/todaybookings', [BookingController::class, 'todaybookings']);

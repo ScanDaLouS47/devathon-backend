@@ -35,7 +35,15 @@ class UserSeeder extends Seeder
             'role_id' => 1
         ]);
 
-
+        User::create([
+            'email' => 'xofohon521@kwalah.com',
+            'name' => 'Marcos',
+            'lName' => 'El Guapeton',
+            'phone' => '+34123456456',
+            'status' => 'active',
+            'password' => 'a51f1cdb-ac0a-4b57-8d4c-6fec20361e8a',
+            'role_id' => 1
+        ]);
 
         User::factory(10)->create(['role_id' => 1]);
     }

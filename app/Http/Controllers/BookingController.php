@@ -213,6 +213,34 @@ class BookingController extends Controller
         }
     }
 
+    public function myBookings2(Request $request)
+    {
+        $userId = auth()->user()->id;
+        $bookings = Booking::where('user_id', $userId)->get();
+        if ($request->query('active')) {
+            $status = $request->query('status');
+
+            if ($status == 'active') {
+                $bookings = $bookings->where('reservationDate', '>=', Carbon::today());
+            } elseif ($status == 'inactive') {
+                $bookings = $bookings->where('reservationDate', '<=', Carbon::now());
+            }
+        }
+
+        if ($request->query('filter')) {
+            $date = $request->query('filter');
+
+            $bookings = $bookings->where('reservationDate', $date);
+        }
+        if ($request->query('persons')) {
+            $persons = $request->query('persons');
+
+            $bookings = $bookings->where('persons', $persons);
+        }
+
+        return $bookings;
+    }
+
     /**
      * Get the today reserves.
      */
@@ -224,7 +252,7 @@ class BookingController extends Controller
             $query->whereDate('reservationDate', Carbon::today());
             $query->whereHas('status', function ($q) use ($active) {
                 $q->where('name', $active);
-            });                        
+            });
 
             $query->with(['user', 'status']);
             $booking = $query->get();
