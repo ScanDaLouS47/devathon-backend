@@ -218,12 +218,11 @@ class BookingController extends Controller
         $userId = auth()->user()->id;
         $bookings = Booking::where('user_id', $userId)->get();
         if ($request->query('active')) {
-            $status = $request->query('status');
-
+            $status = $request->query('active');
             if ($status == 'active') {
-                $bookings = $bookings->where('reservationDate', '>=', Carbon::today());
+                $bookings = $bookings->where('reservationDate', '>=', date('Y-m-d'));
             } elseif ($status == 'inactive') {
-                $bookings = $bookings->where('reservationDate', '<=', Carbon::now());
+                $bookings = $bookings->where('reservationDate', '<=', Carbon::today());
             }
         }
 

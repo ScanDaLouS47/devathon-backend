@@ -39,7 +39,7 @@ class DetailBookingSeeder extends Seeder
         //     ]);
         // }
 
-        // DetailBooking::factory()->has(Booking::factory()->count(3), 'bookings')->create();  
+        // DetailBooking::factory()->has(Booking::factory()->count(3), 'bookings')->create();
         // DetailBooking::factory(10)->create()->each(function ($booking){
         //     Booking::factory(3)->create(['id_booking' => $booking->id]);
         // })->each(function ($table) {
