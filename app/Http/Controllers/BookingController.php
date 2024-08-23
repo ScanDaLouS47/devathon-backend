@@ -217,7 +217,7 @@ class BookingController extends Controller
     {
         try {
             $userId = auth()->user()->id;
-            $bookings = Booking::where('user_id', $userId)->where('status_id', '1')->get();
+            $bookings = Booking::where('user_id', $userId)->where('statusId', '1')->get();
 
             if ($request->query('active')) {
                 $status = $request->query('active');
