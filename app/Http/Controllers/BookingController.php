@@ -213,31 +213,36 @@ class BookingController extends Controller
         }
     }
 
-    public function myBookings2(Request $request)
+    public function myBookings2(Request $request): JsonResponse
     {
-        $userId = auth()->user()->id;
-        $bookings = Booking::where('user_id', $userId)->get();
-        if ($request->query('active')) {
-            $status = $request->query('active');
-            if ($status == 'active') {
-                $bookings = $bookings->where('reservationDate', '>=', date('Y-m-d'));
-            } elseif ($status == 'inactive') {
-                $bookings = $bookings->where('reservationDate', '<=', Carbon::today());
+        try {
+            $userId = auth()->user()->id;
+            $bookings = Booking::where('user_id', $userId)->get();
+
+            if ($request->query('active')) {
+                $status = $request->query('active');
+                if ($status == 'active') {
+                    $bookings = $bookings->where('reservationDate', '>=', date('Y-m-d'));
+                } elseif ($status == 'inactive') {
+                    $bookings = $bookings->where('reservationDate', '<=', Carbon::today());
+                }
             }
+
+            if ($request->query('filter')) {
+                $date = $request->query('filter');
+
+                $bookings = $bookings->where('reservationDate', $date);
+            }
+            if ($request->query('persons')) {
+                $persons = $request->query('persons');
+
+                $bookings = $bookings->where('persons', $persons);
+            }
+
+            return BaseResponse::response(true, $bookings, 'Reserves not found', 200);
+        } catch (Exception $e) {
+            return BaseResponse::response(false, null, $e->getMessage(), 500);
         }
-
-        if ($request->query('filter')) {
-            $date = $request->query('filter');
-
-            $bookings = $bookings->where('reservationDate', $date);
-        }
-        if ($request->query('persons')) {
-            $persons = $request->query('persons');
-
-            $bookings = $bookings->where('persons', $persons);
-        }
-
-        return $bookings;
     }
 
     /**
