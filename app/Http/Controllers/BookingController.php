@@ -239,7 +239,7 @@ class BookingController extends Controller
                 $bookings = $bookings->where('persons', $persons);
             }
 
-            return BaseResponse::response(true, $bookings, 'Reserves not found', 200);
+            return BaseResponse::response(true, BookingResource::collection($bookings), '', 200);
         } catch (Exception $e) {
             return BaseResponse::response(false, null, $e->getMessage(), 500);
         }
