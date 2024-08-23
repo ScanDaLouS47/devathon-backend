@@ -71,7 +71,6 @@ class DetailBookingController extends Controller
                 }
                 $diffPersons = $capacity - $unavailable;
                 $shiftArray['status'] = ($diffPersons >= $persons) ? 'available' : 'full';
-                var_dump('hola');
                 $returnBookings[] = $shiftArray;
 
             }
@@ -116,7 +115,6 @@ class DetailBookingController extends Controller
                         );
                         $shiftArray['start'] = $start->format('Y-m-d H:i:s');
                         $shiftArray['end'] = $end->format('Y-m-d H:i:s');
-                        var_dump('hola');
                         $retArray[] = [
                             'id' => $currentDate->format('Y-m-d H:i:s'),
                             'title' => $turno->name,
